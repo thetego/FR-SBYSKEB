@@ -8,15 +8,18 @@ public class frisbycontrol : MonoBehaviour
 
 	private float mZCoord;
 	Rigidbody fizik;
-	int puan = 0;
-	public Text puantext;
+	public int puan = 0;
+	public int gem;
+	public Text puantext, gameoverScore, gemText;
 	public float frisbyhız;
 	float scoresayac = 0;
 	float süresayac = 0;
+	[SerializeField] private GameObject gameOver;
 
-	void Start()
+	void Awake()
 	{
 		fizik = GetComponent<Rigidbody>();
+		gameOver.SetActive(false);
 	}
 
 	private void OnMouseDown()
@@ -47,15 +50,19 @@ public class frisbycontrol : MonoBehaviour
 		süresayac += Time.deltaTime;
 		scoresayac = süresayac * 10;
 		puantext.text = "Score: "+scoresayac.ToString("000"); //skoru ekrana 3 basamaklı yazdırma
+		gemText.text = "Gem: "+gem.ToString("000"); //gem ekrana 3 basamaklı yazdırma
 	}
-	private void OnTriggerEnter(Collider col)
+	private void OnCollisionEnter(Collision collision)
 	{
-		if (col.gameObject.tag == "engel")
+		if (collision.gameObject.tag == "engel")
 		{
-			SceneManager.LoadScene("kaybetme sahnesi");
+			gameOver.SetActive(true);
+			//frisbyhız = 0;
+			//süresayac = 0;
+			gameoverScore.text = "Score: " + scoresayac.ToString("000");
+			Time.timeScale = 0;
+			this.enabled = false;
 		}
-
 	}
-
 
 }
