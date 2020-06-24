@@ -6,6 +6,8 @@ public class MainMenu : MonoBehaviour
 {
 	public GameObject[] menus;
 	public GameObject Tr, Eng;
+	public LevelItem[] items;
+	
 
 	public void Play()
 	{
@@ -13,6 +15,10 @@ public class MainMenu : MonoBehaviour
 		menus[1].SetActive(true);//levelselector
 		menus[2].SetActive(false);//settings
 		menus[3].SetActive(false);//market
+		for (int i = 0; i<items.Length; i++)
+		{
+			items[i].Check();
+		}
 	}
 	public void Settings()
 	{

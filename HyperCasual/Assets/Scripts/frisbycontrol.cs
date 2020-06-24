@@ -10,16 +10,26 @@ public class frisbycontrol : MonoBehaviour
 	Rigidbody fizik;
 	public int puan = 0;
 	public int gem;
+	public int LevelIndex=1;
 	public Text puantext, gameoverScore, gemText;
 	public float frisbyhız;
 	float scoresayac = 0;
 	float süresayac = 0;
-	[SerializeField] private GameObject gameOver;
+	public float highscore = 0;
+	public Text high;
+	[SerializeField] private GameObject gameOver, tutorial;
 
 	void Awake()
 	{
+		LevelIndex = PlayerPrefs.GetInt("LevelIndex");
 		fizik = GetComponent<Rigidbody>();
 		gameOver.SetActive(false);
+		LevelIndex = PlayerPrefs.GetInt("LevelIndex");
+		if (LevelIndex == 1)
+		{
+			tutorial.SetActive(true);
+			Time.timeScale = 0;
+		}
 	}
 
 	private void OnMouseDown()
@@ -46,11 +56,18 @@ public class frisbycontrol : MonoBehaviour
 		{
 			transform.position = new Vector3(transform.position.x, transform.position.y, GetMouseWorldPos().z + mOffset.z); /// frisbiyi sağa sola kaydırma
 		}
-		fizik.velocity = transform.right * frisbyhız;
+		fizik.velocity = -transform.right * frisbyhız;
 		süresayac += Time.deltaTime;
 		scoresayac = süresayac * 10;
 		puantext.text = "Score: "+scoresayac.ToString("000"); //skoru ekrana 3 basamaklı yazdırma
 		gemText.text = "Gem: "+gem.ToString("000"); //gem ekrana 3 basamaklı yazdırma
+		if (scoresayac > highscore)
+		{
+
+			highscore = süresayac;
+
+		}
+		high.text = "High Score: " + highscore.ToString("000");
 	}
 	private void OnCollisionEnter(Collision collision)
 	{

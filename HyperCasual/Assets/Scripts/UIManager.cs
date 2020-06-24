@@ -4,12 +4,16 @@ using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
-	public static int levelIndex = 1;
 	frisbycontrol controller;
 
 	private void Awake()
 	{
 		controller = GameObject.FindWithTag("Player").GetComponent<frisbycontrol>();
+	}
+	public void NextLevel()
+	{
+		Application.LoadLevel(PlayerPrefs.GetInt("LevelIndex"));
+		Time.timeScale = 1;
 	}
 	public void Retry()
 	{
@@ -19,6 +23,7 @@ public class UIManager : MonoBehaviour
 	}
 	public void MainMenu()
 	{
+		PlayerPrefs.SetInt("LevelIndex",controller.LevelIndex);
 		Application.LoadLevel("MainMenu");
 	}
 }
