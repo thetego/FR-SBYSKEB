@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections;
+using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
@@ -17,6 +19,7 @@ public class frisbycontrol : MonoBehaviour
 	float süresayac = 0;
 	public float highscore = 0;
 	public Text high;
+	bool follow;
 	[SerializeField] private GameObject gameOver, tutorial;
 
 	void Awake()
@@ -25,6 +28,8 @@ public class frisbycontrol : MonoBehaviour
 		fizik = GetComponent<Rigidbody>();
 		gameOver.SetActive(false);
 		LevelIndex = PlayerPrefs.GetInt("LevelIndex");
+		follow = false;
+		StartCoroutine(Wait());
 		if (LevelIndex == 1)
 		{
 			tutorial.SetActive(true);
@@ -51,12 +56,17 @@ public class frisbycontrol : MonoBehaviour
 
 	void Update()
 	{
-		Camera.main.transform.position = new Vector3(transform.position.x+5, Camera.main.transform.position.y, Camera.main.transform.position.z); // kameranın frisbiyi takip etmesi
+		if (follow)
+		{
+			Camera.main.transform.position = new Vector3(transform.position.x + 3, 4.960916f, 36.7752f);
+			Camera.main.transform.rotation = Quaternion.Euler(20.662f, -86.872f, -0.001f);
+			fizik.velocity = -transform.right * frisbyhız;// kameranın frisbiyi takip etmesi
+		}
 		if (Input.GetMouseButton(0))
 		{
 			transform.position = new Vector3(transform.position.x, transform.position.y, GetMouseWorldPos().z + mOffset.z); /// frisbiyi sağa sola kaydırma
 		}
-		fizik.velocity = -transform.right * frisbyhız;
+		
 		süresayac += Time.deltaTime;
 		scoresayac = süresayac * 10;
 		puantext.text = "Score: "+scoresayac.ToString("000"); //skoru ekrana 3 basamaklı yazdırma
@@ -69,17 +79,22 @@ public class frisbycontrol : MonoBehaviour
 		}
 		high.text = "High Score: " + highscore.ToString("000");
 	}
-	private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "engel")
+        {
+            gameOver.SetActive(true);
+            //frisbyhız = 0;
+            //süresayac = 0;
+            gameoverScore.text = "Score: " + scoresayac.ToString("000");
+            Time.timeScale = 0;
+            this.enabled = false;
+        }
+    }
+	IEnumerator Wait()
 	{
-		if (collision.gameObject.tag == "engel")
-		{
-			gameOver.SetActive(true);
-			//frisbyhız = 0;
-			//süresayac = 0;
-			gameoverScore.text = "Score: " + scoresayac.ToString("000");
-			Time.timeScale = 0;
-			this.enabled = false;
-		}
+		yield return new WaitForSeconds(0.7f);
+		follow = true;
+		
 	}
-
 }
