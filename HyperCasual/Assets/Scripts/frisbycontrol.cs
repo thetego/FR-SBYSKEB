@@ -79,7 +79,11 @@ public class frisbycontrol : MonoBehaviour
 		transform.position = new Vector3(transform.position.x, transform.position.y, GetMouseWorldPos().z + mOffset.z); /// frisbiyi sağa sola kaydırma
 		if (transform.position.z < currentpose.z)
 		{
-			transform.Rotate(-25 * Time.deltaTime, 0, 0);
+			if (transform.localRotation.x > -90)
+			{
+				transform.Rotate(-25 * Time.deltaTime, 0, 0);
+			}
+			
 			anim.SetBool("Idle", false);
 			anim.enabled = false;
 			left = true;
@@ -87,7 +91,11 @@ public class frisbycontrol : MonoBehaviour
 		}
 		else
 		{
-			transform.Rotate(25 * Time.deltaTime, 0, 0);
+			if (transform.localRotation.x < -90)
+			{
+				transform.Rotate(25 * Time.deltaTime, 0, 0);
+			}
+				
 			anim.SetBool("Idle", false);
 			anim.enabled = false;
 			right = true;
