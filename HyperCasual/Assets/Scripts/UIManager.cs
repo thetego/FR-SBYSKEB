@@ -17,7 +17,7 @@ public class UIManager : MonoBehaviour
 	}
 	public void Retry()
 	{
-		Application.LoadLevel("Level 1");
+		Application.LoadLevel("Level 5");
 		Time.timeScale = 1;
 		controller.enabled = true;
 	}

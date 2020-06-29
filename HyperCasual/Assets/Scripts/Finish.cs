@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Finish : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class Finish : MonoBehaviour
 	public GameObject win;
 	Dog dog;
 	public frisbycontrol controller;
+	public Text high, score;
 
 	private void Awake()
 	{
@@ -25,6 +27,8 @@ public class Finish : MonoBehaviour
 			dog.transform.position = Vector3.MoveTowards(dog.transform.position, controller.transform.position, 2f);
 			controller.LevelIndex += 1;
 			win.SetActive(true);
+			high.text = "High Score: "+controller.highscore.ToString("000");
+			score.text = "Score: "+controller.scoresayac.ToString("000");
 			PlayerPrefs.SetInt("LevelIndex", controller.LevelIndex);
 			PlayerPrefs.SetFloat("HighScore", controller.highscore);
 			PlayerPrefs.SetInt("Gem", controller.gem);
