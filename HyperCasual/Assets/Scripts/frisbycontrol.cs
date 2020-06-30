@@ -21,12 +21,13 @@ public class frisbycontrol : MonoBehaviour
 	public float highscore = 0;
 	public float timer;
 	public Text high, comboT;
-	public bool follow, left, right, combo, throwv;
+	public bool follow, left, right, combo, throwv, boostb;
 	[SerializeField] private GameObject gameOver, tutorial;
 	public GameObject handle, main, chara;
 	public Transform[] target;
 	public Transform level;
 	public bool[] challenge;
+	public Slider power;
 
 	void Awake()
 	{

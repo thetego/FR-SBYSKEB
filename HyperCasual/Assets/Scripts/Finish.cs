@@ -38,7 +38,7 @@ public class Finish : MonoBehaviour
 			{
 				if (controller.challenge[i])
 				{
-					c++;
+					
 				}
 			}
 			if (c == 8)
